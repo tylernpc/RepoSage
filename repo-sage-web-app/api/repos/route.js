@@ -11,10 +11,9 @@ const langMap = {
 };
 
 // doc LOADER, splitter, and runner
-const load = async () => {
+const load = async (repoUrl) => {
   const loader = new GithubRepoLoader(
-    //todo: tyler - remove link and switch to a user input based link
-    "https://github.com/langchain-ai/langchainjs",
+    repoUrl,
     {
       branch: "main",
       recursive: false,
@@ -51,3 +50,19 @@ const split = async (docs) => {
 const store = async (splitDocs) => {
   await vectorStore.addDocuments(splitDocs);
 };
+
+export async function POST(req) {
+  try {
+    const { repoUrl } = await req.json();
+
+    if (!repoUrl) {
+      return Response.json({ error: "repoUrl is required" }, { status: 400 });
+    }
+
+    await load(repoUrl);
+
+    return Response.json({ success: true });
+  } catch (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+}
