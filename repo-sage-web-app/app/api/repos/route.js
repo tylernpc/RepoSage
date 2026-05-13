@@ -1,7 +1,7 @@
 import path from "node:path";
 import {GithubRepoLoader} from "@langchain/community/document_loaders/web/github";
 import {RecursiveCharacterTextSplitter} from "@langchain/textsplitters";
-import {vectorStore} from "../../lib/vectorstore";
+import {vectorStore} from "../../../lib/vectorstore";
 
 const langMap = {
   ".js": "js",
