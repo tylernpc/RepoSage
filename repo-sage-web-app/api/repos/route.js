@@ -1,6 +1,7 @@
 import path from "node:path";
-import { GithubRepoLoader } from "@langchain/community/document_loaders/web/github";
-import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters";
+import {GithubRepoLoader} from "@langchain/community/document_loaders/web/github";
+import {RecursiveCharacterTextSplitter} from "@langchain/textsplitters";
+import {vectorStore} from "../../lib/vectorstore";
 
 const langMap = {
   ".js": "js",
@@ -9,6 +10,7 @@ const langMap = {
   ".md": "markdown",
 };
 
+// doc LOADER, splitter, and runner
 const load = async () => {
   const loader = new GithubRepoLoader(
     //todo: tyler - remove link and switch to a user input based link
@@ -22,9 +24,11 @@ const load = async () => {
   );
 
   const docs = await loader.load();
-  const chunks = await split(docs);
+  const splitDocs = await split(docs);
+  await store(splitDocs);
 };
 
+// doc split
 const split = async (docs) => {
   const splitDocs = await Promise.all(
     docs.map(async (doc) => {
@@ -43,12 +47,7 @@ const split = async (docs) => {
   return splitDocs.flat();
 };
 
-const run = async () => {
-  console.log("Starting...");
-
-  await load();
-
-  console.log("Repo Ingested...");
+// doc store
+const store = async (splitDocs) => {
+  await vectorStore.addDocuments(splitDocs);
 };
-
-run();

@@ -1,4 +1,18 @@
-import { MemoryVectorStore } from "@langchain/classic/vectorstores/memory";
+import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
+import { createClient } from "@supabase/supabase-js";
 import { embeddings } from "./embeddings.js";
 
-export const vectorStore = new MemoryVectorStore(embeddings);
+const client = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SECRET_KEY!
+);
+
+// this basically wires up LangChain up to the exact schema we set in supabase
+export const vectorStore = new SupabaseVectorStore(embeddings, {
+  client,
+  tableName: "documents",
+  // match_documents is the the postgres function to call when doing similarity search,
+  // this maps to the match_doucments function from our SQL script.
+  // langchain calls that function under the hood passing in the query embedding
+  queryName: "match_documents",
+});
