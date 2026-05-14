@@ -15,7 +15,7 @@ export default function Home() {
     setError("");
 
     try {
-      const res = await fetch("/api/repos", {
+      const res = await fetch("/api/vector", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ repoUrl }),

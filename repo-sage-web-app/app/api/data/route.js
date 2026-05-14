@@ -1,1 +1,0 @@
-// supbase get calls are going to happen here to show/support visual data for what ai is calling in the main ui
