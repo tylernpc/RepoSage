@@ -1,11 +1,6 @@
 import { SupabaseVectorStore } from "@langchain/community/vectorstores/supabase";
-import { createClient } from "@supabase/supabase-js";
+import { client } from "./supbase"
 import { embeddings } from "./embeddings";
-
-const client = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SECRET_KEY!
-);
 
 // this basically wires up LangChain up to the exact schema we set in supabase
 export const vectorStore = new SupabaseVectorStore(embeddings, {
