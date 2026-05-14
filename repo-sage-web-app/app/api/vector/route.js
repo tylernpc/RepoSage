@@ -37,10 +37,9 @@ const split = async (docs) => {
       const ext = path.extname(doc.metadata.source ?? "");
       const lang = langMap[ext] ?? "";
 
-      const splitter = RecursiveCharacterTextSplitter.fromLanguage(lang, {
-        chunkSize: 1000,
-        chunkOverlap: 200,
-      });
+      const splitter = lang
+        ? RecursiveCharacterTextSplitter.fromLanguage(lang, { chunkSize: 1000, chunkOverlap: 200 })
+        : new RecursiveCharacterTextSplitter({ chunkSize: 1000, chunkOverlap: 200 });
 
       return splitter.splitDocuments([doc]);
     }),
