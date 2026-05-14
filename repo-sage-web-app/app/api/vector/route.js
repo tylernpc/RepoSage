@@ -16,9 +16,11 @@ const load = async (repoUrl) => {
     repoUrl,
     {
       branch: "main",
-      recursive: false,
+      recursive: true,
       unknown: "warn",
       maxConcurrency: 5,
+      ignorePaths: ["node_modules", "package-lock.json", "yarn.lock", ".next", "dist", ".git"],
+      accessToken: process.env.GITHUB_ACCESS_TOKEN,
     },
   );
 
