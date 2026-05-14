@@ -8,6 +8,7 @@ const langMap = {
   ".ts": "ts",
   ".py": "python",
   ".md": "markdown",
+  ".cs": "csharp",
 };
 
 // doc LOADER, splitter, and runner
@@ -19,7 +20,7 @@ const load = async (repoUrl) => {
       recursive: true,
       unknown: "warn",
       maxConcurrency: 5,
-      ignorePaths: ["node_modules", "package-lock.json", "yarn.lock", ".next", "dist", ".git"],
+      ignorePaths: ["node_modules", "package-lock.json", "yarn.lock", ".next", "dist", ".git", "bin", "obj"],
       accessToken: process.env.GITHUB_ACCESS_TOKEN,
     },
   );
