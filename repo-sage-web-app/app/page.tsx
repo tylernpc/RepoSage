@@ -1,6 +1,7 @@
 "use client";
 
 import React, {useState, useEffect, useRef} from "react";
+import ReactMarkdown from "react-markdown";
 import {Status} from "@/lib/types";
 import type {Document, Message} from "@/lib/types";
 
@@ -165,13 +166,17 @@ export default function Home() {
                                     <div key={i}
                                          className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
                                         <div
-                                            className={`max-w-[80%] rounded-lg px-4 py-2 text-sm whitespace-pre-wrap ${
+                                            className={`max-w-[80%] rounded-lg px-4 py-2 text-sm ${
                                                 msg.role === "user"
                                                     ? "bg-white text-black"
                                                     : "bg-zinc-800 text-zinc-200"
                                             }`}
                                         >
-                                            {msg.content}
+                                            {msg.role === "user" ? msg.content : (
+                                                <div className="prose prose-sm prose-invert max-w-none">
+                                                    <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                                </div>
+                                            )}
                                         </div>
                                     </div>
                                 ))
