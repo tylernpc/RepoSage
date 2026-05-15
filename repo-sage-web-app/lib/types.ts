@@ -7,6 +7,11 @@ export const Status = {
 
 export type Status = (typeof Status)[keyof typeof Status];
 
+export type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 export type Document = {
   id: number;
   content: string;
