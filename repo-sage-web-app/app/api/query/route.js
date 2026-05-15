@@ -16,14 +16,10 @@ export async function POST(req) {
         const response = await model.invoke([
             {
                 role: "system",
-                content: `You are a code assistant that answers questions 
-                about the provided repository context. If the question is 
-                not related to the code or repository, respond with: "I can 
-                only answer questions about this repository." Do not answer 
-                general programming questions, personal questions, or anything 
-                unrelated to the context below. Keep in mind asking in natural
-                language should not automatically diquality a valid query about
-                the repoContext: ${context}`
+                content: `You are a helpful code assistant. Use the context below to answer questions about this repository. Be generous in what you consider relevant — questions about dependencies, architecture, how things work, and general code questions are all fair game. Only decline if the question is clearly unrelated to software or this codebase entirely.
+
+Context:
+${context}`
             },
             {role: "user", content: question},
         ]);
