@@ -4,6 +4,8 @@ Chat with any GitHub repository using RAG (Retrieval Augmented Generation), Lang
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square) ![LangChain](https://img.shields.io/badge/LangChain-1.x-green?style=flat-square) ![Supabase](https://img.shields.io/badge/Supabase-pgvector-brightgreen?style=flat-square)
 
+https://github.com/user-attachments/assets/aa5bb464-e354-4bcd-a422-af26fc62d498
+
 ## How It Works
 
 1. Paste a public GitHub repo URL
