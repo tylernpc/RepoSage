@@ -1,1 +1,1 @@
-One of the biggest challenges during development was handling rate limiting with Github DocLoader. Solving this helped shape our approach to filtering unnecessary repository data by identifying file types that should be excluded from ingestion to reduce bloat and improve efficiency. In particular, large binary files such as DLLs and other non-essential assets were creating unnecessary overhead and slowing processing.
+
