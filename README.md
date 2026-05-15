@@ -6,6 +6,8 @@ Chat with any GitHub repository using RAG (Retrieval Augmented Generation), Lang
 
 https://github.com/user-attachments/assets/aa5bb464-e354-4bcd-a422-af26fc62d498
 
+<img width="1773" height="335" alt="image" src="https://github.com/user-attachments/assets/06fd3f28-ae7e-4036-b9e2-763c9225fa93" />
+
 ## How It Works
 
 1. Paste a public GitHub repo URL
