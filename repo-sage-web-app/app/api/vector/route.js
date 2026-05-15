@@ -27,7 +27,7 @@ const load = async (repoUrl) => {
 
     const docs = await loader.load();
     const splitDocs = await split(docs);
-    await store(splitDocs);
+    await store(splitDocs, repoUrl);
 };
 
 // doc split
@@ -49,8 +49,12 @@ const split = async (docs) => {
 };
 
 // doc store
-const store = async (splitDocs) => {
-    await vectorStore.addDocuments(splitDocs);
+const store = async (splitDocs, repoUrl) => {
+    const tagged = splitDocs.map(doc => ({
+        ...doc,
+        metadata: { ...doc.metadata, repo: repoUrl },
+    }));
+    await vectorStore.addDocuments(tagged);
 };
 
 export async function POST(req) {

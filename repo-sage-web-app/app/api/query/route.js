@@ -5,11 +5,12 @@ const model = new ChatOpenAI({model: "gpt-4o-mini"});
 
 export async function POST(req) {
     try {
-        const {question} = await req.json();
+        const {question, repoUrl} = await req.json();
 
         if (!question) return Response.json({error: "question is required"}, {status: 400});
 
-        const results = await vectorStore.similaritySearch(question, 4);
+        const filter = repoUrl ? { repo: repoUrl } : {};
+        const results = await vectorStore.similaritySearch(question, 4, filter);
         const context = results.map(doc => doc.pageContent).join("\n\n");
 
         const response = await model.invoke([

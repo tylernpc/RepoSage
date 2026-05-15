@@ -10,6 +10,7 @@ export default function Home() {
     const [ingestError, setIngestError] = useState("");
     const [documents, setDocuments] = useState<Document[]>([]);
 
+    const [activeRepo, setActiveRepo] = useState("");
     const [messages, setMessages] = useState<Message[]>([]);
     const [question, setQuestion] = useState("");
     const [queryLoading, setQueryLoading] = useState(false);
@@ -54,6 +55,8 @@ export default function Home() {
             }
 
             setIngestStatus(Status.Success);
+            setActiveRepo(repoUrl);
+            setMessages([]);
             setRepoUrl("");
             await fetchDocuments();
         } catch (err: unknown) {
@@ -77,7 +80,7 @@ export default function Home() {
             const res = await fetch("/api/query", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({question: userMessage.content}),
+                body: JSON.stringify({question: userMessage.content, repoUrl: activeRepo}),
             });
 
             const data = await res.json();
@@ -142,15 +145,20 @@ export default function Home() {
 
                 {/* Chat */}
                 <div className="flex flex-col gap-3">
-                    <label className="text-xs font-medium text-zinc-400 uppercase tracking-widest">
-                        Ask the repo
-                    </label>
+                    <div className="flex items-center justify-between">
+                        <label className="text-xs font-medium text-zinc-400 uppercase tracking-widest">
+                            Ask the repo
+                        </label>
+                        {activeRepo && (
+                            <span className="text-xs text-zinc-600 font-mono truncate max-w-[60%]">{activeRepo}</span>
+                        )}
+                    </div>
                     <div
                         className="rounded-lg border border-zinc-800 bg-zinc-900/40 flex flex-col min-h-64 max-h-120">
                         <div className="flex-1 overflow-y-auto px-4 py-4 flex flex-col gap-4">
                             {messages.length === 0 ? (
                                 <p className="text-zinc-600 text-sm m-auto">
-                                    {documents.length === 0 ? "Ingest a repo to get started." : "Ask a question about the repo."}
+                                    {!activeRepo ? "Ingest a repo to get started." : "Ask a question about the repo."}
                                 </p>
                             ) : (
                                 messages.map((msg, i) => (
@@ -184,12 +192,12 @@ export default function Home() {
                                 value={question}
                                 onChange={(e) => setQuestion(e.target.value)}
                                 placeholder="Ask a question..."
-                                disabled={queryLoading || documents.length === 0}
+                                disabled={queryLoading || !activeRepo}
                                 className="flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-4 py-2 text-sm text-white placeholder-zinc-600 outline-none focus:border-zinc-600 transition-colors disabled:opacity-50"
                             />
                             <button
                                 type="submit"
-                                disabled={queryLoading || !question.trim() || documents.length === 0}
+                                disabled={queryLoading || !question.trim() || !activeRepo}
                                 className="bg-white text-black font-medium text-sm px-4 py-2 rounded-lg hover:bg-zinc-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                             >
                                 Send
