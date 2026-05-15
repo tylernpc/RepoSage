@@ -21,7 +21,9 @@ export async function POST(req) {
                 not related to the code or repository, respond with: "I can 
                 only answer questions about this repository." Do not answer 
                 general programming questions, personal questions, or anything 
-                unrelated to the context below. Context: ${context}`
+                unrelated to the context below. Keep in mind asking in natural
+                language should not automatically diquality a valid query about
+                the repoContext: ${context}`
             },
             {role: "user", content: question},
         ]);
