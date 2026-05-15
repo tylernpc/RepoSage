@@ -14,10 +14,29 @@ https://github.com/user-attachments/assets/aa5bb464-e354-4bcd-a422-af26fc62d498
 4. Ask questions in natural language — your query is embedded and matched against the stored chunks via similarity search
 5. The most relevant code chunks are passed to the LLM as context to generate an answer
 
-```
-GitHub Repo → GithubRepoLoader → RecursiveCharacterTextSplitter → OpenAI Embeddings → Supabase (pgvector)
-                                                                                              ↓
-User Query → Embed Query → Similarity Search → Relevant Chunks → LLM (gpt-4o-mini) → Answer
+```mermaid
+flowchart TD
+    subgraph Ingest["Ingest Flow"]
+        A([User pastes GitHub URL]) --> B[POST /api/vector]
+        B --> C[GithubRepoLoader\nfetches all files via GitHub API]
+        C --> D[RecursiveCharacterTextSplitter\nchunkSize: 1000 / overlap: 200]
+        D --> E[Tag metadata\nsource + repo URL]
+        E --> F[OpenAI Embeddings\ntext-embedding-3-small → vector 1536]
+        F --> G[(Supabase documents table\npgvector)]
+    end
+
+    subgraph Query["Query Flow"]
+        H([User asks a question]) --> I[POST /api/query]
+        I --> J[OpenAI Embeddings\nembed query → vector 1536]
+        J --> K[similaritySearch\nfilter by repo URL]
+        K --> L[(Supabase\nmatch_documents\ncosine similarity search)]
+        L --> M[Top 4 chunks returned]
+        M --> N[Build prompt\nsystem context + user question]
+        N --> O[ChatOpenAI\ngpt-4o-mini]
+        O --> P([Answer rendered in chat])
+    end
+
+    G -.->|stored chunks| L
 ```
 
 ## Tech Stack
