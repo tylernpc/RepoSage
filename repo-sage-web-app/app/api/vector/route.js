@@ -2,6 +2,7 @@ import path from "node:path";
 import {GithubRepoLoader} from "@langchain/community/document_loaders/web/github";
 import {RecursiveCharacterTextSplitter} from "@langchain/textsplitters";
 import {vectorStore} from "../../../lib/vectorstore";
+import {client} from "../../../lib/supbase";
 
 const langMap = {
     ".js": "js",
@@ -65,6 +66,7 @@ export async function POST(req) {
             return Response.json({error: "repoUrl is required"}, {status: 400});
         }
 
+        await client.from("documents").delete().filter("metadata->>repo", "eq", repoUrl);
         await load(repoUrl);
 
         return Response.json({success: true});
